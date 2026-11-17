@@ -656,6 +656,7 @@ export function App() {
         />
 
         <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-6 sm:px-6 lg:px-8">
+          <div key={activePage} className="animate-page-enter">
           {activePage === 'Overview' && (
             <OverviewPage
               workflows={workflows}
@@ -716,6 +717,7 @@ export function App() {
               onResetAllData={handleResetAllData}
             />
           )}
+          </div>
         </main>
 
         <footer className="border-t border-[#1E2942] px-4 py-4 text-xs text-slate-400 sm:px-6 lg:px-8">
@@ -739,7 +741,7 @@ export function App() {
         <div
           role="status"
           aria-live="polite"
-          className={`fixed bottom-5 right-5 z-50 flex items-center gap-2.5 rounded-lg border px-4 py-2.5 text-xs font-medium shadow-xl ${
+          className={`animate-toast-enter fixed bottom-5 right-5 z-50 flex items-center gap-2.5 rounded-lg border px-4 py-2.5 text-xs font-medium shadow-xl ${
             toast.tone === 'warn'
               ? 'border-amber-700/70 bg-[#231B12] text-amber-200'
               : 'border-emerald-700/70 bg-[#102620] text-emerald-200'

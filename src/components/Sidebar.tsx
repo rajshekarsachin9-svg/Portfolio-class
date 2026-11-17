@@ -182,15 +182,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     onSelectPage(id);
                     onCloseMobile();
                   }}
-                  className={`flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
+                  className={`group flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium transition-all duration-150 whitespace-nowrap ${
                     isActive
-                      ? 'bg-[#17233E] text-white'
-                      : 'text-slate-400 hover:bg-[#121B31] hover:text-slate-200'
+                      ? 'bg-[#17233E] text-white shadow-[inset_2px_0_0_#818cf8]'
+                      : 'text-slate-400 hover:translate-x-0.5 hover:bg-[#121B31] hover:text-slate-100'
                   }`}
                 >
                   <Icon
-                    className={`h-4 w-4 shrink-0 ${
-                      isActive ? 'text-indigo-400' : 'text-slate-400'
+                    className={`h-4 w-4 shrink-0 transition-transform duration-150 group-hover:scale-105 ${
+                      isActive ? 'text-indigo-400' : 'text-slate-400 group-hover:text-indigo-300'
                     }`}
                     aria-hidden="true"
                   />

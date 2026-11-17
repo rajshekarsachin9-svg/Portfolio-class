@@ -96,6 +96,15 @@ export const DependencyGraph: React.FC<DependencyGraphProps> = ({
     return { totalWidth, totalHeight, positions, edges };
   }, [layers, tasks]);
 
+  const [hoveredTaskId, setHoveredTaskId] = React.useState<string | null>(null);
+  const focusTaskId = hoveredTaskId ?? selectedTaskId;
+
+  function handleNodePointerMove(e: React.MouseEvent<HTMLElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty('--my', `${e.clientY - rect.top}px`);
+  }
+
   return (
     <div className="w-full overflow-x-auto rounded-lg border border-[#1E2942] bg-[#0A101F]">
       <div
@@ -159,7 +168,8 @@ export const DependencyGraph: React.FC<DependencyGraphProps> = ({
 
           {layout.edges.map((edge) => {
             const isHighlighted =
-              edge.fromId === selectedTaskId || edge.toId === selectedTaskId;
+              edge.fromId === focusTaskId || edge.toId === focusTaskId;
+            const isDimmed = hoveredTaskId !== null && !isHighlighted;
             const stroke =
               edge.state === 'failed'
                 ? '#f87171'
@@ -186,9 +196,12 @@ export const DependencyGraph: React.FC<DependencyGraphProps> = ({
                 d={edge.path}
                 fill="none"
                 stroke={stroke}
-                strokeWidth={isHighlighted ? 2.2 : 1.6}
+                strokeWidth={isHighlighted ? 2.5 : 1.6}
                 strokeDasharray={edge.state === 'active' ? '5 4' : undefined}
-                opacity={isHighlighted || edge.state !== 'idle' ? 0.95 : 0.65}
+                opacity={isDimmed ? 0.25 : isHighlighted || edge.state !== 'idle' ? 1 : 0.6}
+                className={`transition-all duration-200 ${
+                  edge.state === 'active' ? 'animate-dash-flow' : ''
+                }`}
                 markerEnd={markerEnd}
               />
             );
@@ -203,17 +216,20 @@ export const DependencyGraph: React.FC<DependencyGraphProps> = ({
           const borderClass = isSelected
             ? 'border-indigo-400 ring-1 ring-indigo-400/50 bg-[#15203B]'
             : task.status === 'failed' || task.status === 'blocked'
-              ? 'border-rose-700/70 bg-[#14182B] hover:border-rose-500/80'
+              ? 'border-rose-700/70 bg-[#14182B] hover:border-rose-400'
               : task.status === 'awaiting_approval'
-                ? 'border-amber-600/70 bg-[#161E33] hover:border-amber-500'
+                ? 'border-amber-600/70 bg-[#161E33] hover:border-amber-400'
                 : task.status === 'running' || task.status === 'retrying'
                   ? 'border-sky-500/70 bg-[#131F38] hover:border-sky-400'
-                  : 'border-[#253352] bg-[#10182C] hover:border-slate-500';
+                  : 'border-[#253352] bg-[#10182C] hover:border-indigo-400/70';
 
           return (
             <button
               key={task.id}
               type="button"
+              onMouseEnter={() => setHoveredTaskId(task.id)}
+              onMouseLeave={() => setHoveredTaskId(null)}
+              onMouseMove={handleNodePointerMove}
               onClick={() => onSelectTask(task.id)}
               style={{
                 left: `${pos.x}px`,
@@ -221,7 +237,7 @@ export const DependencyGraph: React.FC<DependencyGraphProps> = ({
                 width: `${NODE_W}px`,
                 height: `${NODE_H}px`,
               }}
-              className={`absolute flex flex-col justify-between rounded-lg border p-3 text-left transition-colors duration-150 ${borderClass}`}
+              className={`spotlight-card absolute flex flex-col justify-between rounded-lg border p-3 text-left ${borderClass}`}
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5">

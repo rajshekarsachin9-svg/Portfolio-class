@@ -108,10 +108,10 @@ export const WorkflowsPage: React.FC<WorkflowsPageProps> = ({
               key={wf.id}
               type="button"
               onClick={() => onSelectWorkflow(wf.id)}
-              className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap shrink-0 ${
+              className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-all duration-150 hover:-translate-y-0.5 whitespace-nowrap shrink-0 ${
                 wf.id === activeWorkflow.id
-                  ? 'border-indigo-500/60 bg-indigo-500/15 text-indigo-200'
-                  : 'border-[#1E2942] bg-[#0E1528] text-slate-400 hover:border-[#2E3E62] hover:text-slate-200'
+                  ? 'border-indigo-500/60 bg-indigo-500/15 text-indigo-200 shadow-[0_4px_14px_-6px_rgba(99,102,241,0.5)]'
+                  : 'border-[#1E2942] bg-[#0E1528] text-slate-400 hover:border-indigo-400/50 hover:text-slate-200'
               }`}
             >
               <span className="font-mono mr-1.5">{wf.code}</span>
@@ -147,7 +147,7 @@ export const WorkflowsPage: React.FC<WorkflowsPageProps> = ({
             <button
               type="button"
               onClick={() => onResetWorkflow(activeWorkflow.id)}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[#253352] bg-[#121B31] px-3 py-2 text-xs font-medium text-slate-300 hover:bg-[#192542] whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#253352] bg-[#121B31] px-3 py-2 text-xs font-medium text-slate-300 transition-all duration-150 hover:-translate-y-0.5 hover:border-indigo-400/50 hover:bg-[#192542] whitespace-nowrap"
             >
               <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
               <span>Reset</span>
@@ -156,7 +156,7 @@ export const WorkflowsPage: React.FC<WorkflowsPageProps> = ({
               type="button"
               disabled={activeWorkflow.status === 'running'}
               onClick={() => onSimulateHardFailure(activeWorkflow.id)}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-rose-800/60 bg-rose-950/40 px-3 py-2 text-xs font-medium text-rose-200 hover:bg-rose-950/70 disabled:opacity-40 whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-rose-800/60 bg-rose-950/40 px-3 py-2 text-xs font-medium text-rose-200 transition-all duration-150 hover:-translate-y-0.5 hover:border-rose-500/70 hover:bg-rose-950/70 disabled:opacity-40 disabled:hover:translate-y-0 whitespace-nowrap"
             >
               <AlertTriangle className="h-3.5 w-3.5" aria-hidden="true" />
               <span>Simulate Failure</span>
@@ -165,7 +165,7 @@ export const WorkflowsPage: React.FC<WorkflowsPageProps> = ({
               type="button"
               disabled={activeWorkflow.status === 'running'}
               onClick={() => onRunWorkflow(activeWorkflow.id)}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-indigo-500 disabled:opacity-50 whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white transition-all duration-150 hover:-translate-y-0.5 hover:bg-indigo-500 hover:shadow-[0_6px_18px_-4px_rgba(99,102,241,0.55)] disabled:opacity-50 disabled:hover:translate-y-0 whitespace-nowrap"
             >
               <Play className="h-3.5 w-3.5" aria-hidden="true" />
               <span>
@@ -306,10 +306,10 @@ export const WorkflowsPage: React.FC<WorkflowsPageProps> = ({
                       <tr
                         key={task.id}
                         onClick={() => onSelectTask(task.id)}
-                        className={`cursor-pointer transition-colors ${
+                        className={`interactive-row cursor-pointer ${
                           isSelected
-                            ? 'bg-[#17233E]'
-                            : 'hover:bg-[#121B31]'
+                            ? 'bg-[#17233E] shadow-[inset_2px_0_0_#818cf8]'
+                            : ''
                         }`}
                       >
                         <td className="px-4 py-3 font-mono font-semibold text-indigo-300 tabular-nums whitespace-nowrap align-top">

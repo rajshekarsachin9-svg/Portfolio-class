@@ -64,7 +64,7 @@ export const WorkflowComposerModal: React.FC<WorkflowComposerModalProps> = ({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border border-[#283655] bg-[#0E1528] shadow-2xl">
+      <div className="animate-modal-enter flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border border-[#283655] bg-[#0E1528] shadow-2xl">
         {/* Header */}
         <div className="flex items-start justify-between gap-4 border-b border-[#1E2942] px-6 py-4">
           <div>

@@ -169,6 +169,12 @@ export function decomposeObjectiveToWorkflow(params: {
 
   // Domain-adaptive decomposition for any custom business objective
   const lower = trimmed.toLowerCase();
+  const isEventOrConference =
+    lower.includes('event') ||
+    lower.includes('conference') ||
+    lower.includes('raster') ||
+    lower.includes('keynote') ||
+    lower.includes('speaker');
   const isSecurityOrVendor =
     lower.includes('vendor') ||
     lower.includes('security') ||
@@ -183,37 +189,47 @@ export function decomposeObjectiveToWorkflow(params: {
 
   const inferredTitle =
     params.customTitle?.trim() ||
-    (isSecurityOrVendor
-      ? 'Vendor Readiness & Compliance Plan'
+    (isEventOrConference
+      ? 'Event Operations & Speaker Briefing'
+      : isSecurityOrVendor
+        ? 'Vendor Readiness & Compliance Plan'
+        : isBoardOrReport
+          ? 'Executive Performance & Risk Brief'
+          : trimmed.length > 48
+            ? `${trimmed.slice(0, 48).trim()}…`
+            : trimmed);
+
+  const researchTaskTitle = isEventOrConference
+    ? 'Gather speaker bios, venue specs & stage schedule inputs'
+    : isSecurityOrVendor
+      ? 'Gather vendor posture, certifications & public disclosures'
       : isBoardOrReport
-        ? 'Executive Performance & Risk Brief'
-        : trimmed.length > 48
-          ? `${trimmed.slice(0, 48).trim()}…`
-          : trimmed);
+        ? 'Collect quarterly metrics, KPI variances & department updates'
+        : 'Research domain context, stakeholders & reference inputs';
 
-  const researchTaskTitle = isSecurityOrVendor
-    ? 'Gather vendor posture, certifications & public disclosures'
-    : isBoardOrReport
-      ? 'Collect quarterly metrics, KPI variances & department updates'
-      : 'Research domain context, stakeholders & reference inputs';
+  const opsTaskTitle = isEventOrConference
+    ? 'Coordinate AV cues, registration desks & stage run-of-show'
+    : isSecurityOrVendor
+      ? 'Prepare security onboarding & access control checklist'
+      : isBoardOrReport
+        ? 'Audit operational blockers, delivery risks & milestone owners'
+        : 'Coordinate operational dependencies & readiness checklist';
 
-  const opsTaskTitle = isSecurityOrVendor
-    ? 'Prepare security onboarding & access control checklist'
-    : isBoardOrReport
-      ? 'Audit operational blockers, delivery risks & milestone owners'
-      : 'Coordinate operational dependencies & readiness checklist';
+  const docTaskTitle = isEventOrConference
+    ? 'Compile attendee briefing book & speaker run-of-show'
+    : isSecurityOrVendor
+      ? 'Author vendor risk assessment & onboarding brief'
+      : isBoardOrReport
+        ? 'Draft structured executive performance report'
+        : 'Synthesize structured briefing document & action plan';
 
-  const docTaskTitle = isSecurityOrVendor
-    ? 'Author vendor risk assessment & onboarding brief'
-    : isBoardOrReport
-      ? 'Draft structured executive performance report'
-      : 'Synthesize structured briefing document & action plan';
-
-  const commTaskTitle = isSecurityOrVendor
-    ? 'Draft vendor compliance questionnaire email'
-    : isBoardOrReport
-      ? 'Prepare leadership summary & pre-read email draft'
-      : 'Draft stakeholder update & follow-up message';
+  const commTaskTitle = isEventOrConference
+    ? 'Draft speaker logistics & attendee welcome email'
+    : isSecurityOrVendor
+      ? 'Draft vendor compliance questionnaire email'
+      : isBoardOrReport
+        ? 'Prepare leadership summary & pre-read email draft'
+        : 'Draft stakeholder update & follow-up message';
 
   const tasks: WorkflowTask[] = [
     {

@@ -39,6 +39,12 @@ export const AgentsPage: React.FC<AgentsPageProps> = ({
     );
   }
 
+  function handleCardPointerMove(e: React.MouseEvent<HTMLElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty('--my', `${e.clientY - rect.top}px`);
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -68,7 +74,8 @@ export const AgentsPage: React.FC<AgentsPageProps> = ({
             return (
               <article
                 key={agent.id}
-                className="flex flex-col justify-between rounded-xl border border-[#1E2942] bg-[#0E1528] p-5"
+                onMouseMove={handleCardPointerMove}
+                className="spotlight-card flex flex-col justify-between rounded-xl border border-[#1E2942] bg-[#0E1528] p-5"
               >
                 <div>
                   <div className="flex items-start justify-between gap-3 border-b border-[#1E2942] pb-4">
@@ -141,10 +148,10 @@ export const AgentsPage: React.FC<AgentsPageProps> = ({
                       onClick={() =>
                         onInspectTask(activeWorkflow.id, assignedTask.id)
                       }
-                      className="inline-flex items-center gap-1 rounded-md border border-[#253352] bg-[#121B31] px-2.5 py-1.5 text-xs font-medium text-indigo-200 hover:bg-[#192542] whitespace-nowrap shrink-0"
+                      className="group inline-flex items-center gap-1 rounded-md border border-[#253352] bg-[#121B31] px-2.5 py-1.5 text-xs font-medium text-indigo-200 transition-colors hover:border-indigo-400/60 hover:bg-[#192542] whitespace-nowrap shrink-0"
                     >
                       <span>Inspect Task</span>
-                      <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                      <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
                     </button>
                   </div>
                 )}
